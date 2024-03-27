@@ -15,12 +15,12 @@ import shutil
 
 bot = Client(
     "TerdaB",
-    bot_token="7017156292:AAFczosU8rfhd2To0Kq1LfKF8v7pWzJZ8Ac",
-    api_id=1712043,
-    api_hash="965c994b615e2644670ea106fd31daaf"
+    bot_token="7054995045:AAH-AxR3Zexj25qis7b5zZLV_xY-eKQkNWQ",
+    api_id=23054736,
+    api_hash="d538c2e1a687d414f5c3dce7bf4a743c"
 )
 
-admin_ids = [6121699672, 1111214141]  # Add all admin IDs here
+admin_ids = [23054736]  # Add all admin IDs here
 shortener = pyshorteners.Shortener()
 
 # Create a temporary directory
