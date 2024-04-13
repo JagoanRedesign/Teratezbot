@@ -15,12 +15,12 @@ import shutil
 
 bot = Client(
     "TerdaB",
-    bot_token="7054995045:AAH-AxR3Zexj25qis7b5zZLV_xY-eKQkNWQ",
-    api_id=23054736,
-    api_hash="d538c2e1a687d414f5c3dce7bf4a743c"
+    bot_token="7008893285:AAFxVuXlM5awuoC3yl1O7HvHFcLL8DVb5dE",
+    api_id=25980746,
+    api_hash="a5466e5ed88d29db158be4cb3b669337"
 )
 
-admin_ids = [23054736]  # Add all admin IDs here
+admin_ids = [1910497806]  # Add all admin IDs here
 shortener = pyshorteners.Shortener()
 
 # Create a temporary directory
@@ -51,7 +51,7 @@ try:
 except:
     pass
 
-channel_username = "@TeleBotsUpdate"
+channel_username = "@@mzmucix"
 
 def check_joined():
     async def func(flt, bot, message):
@@ -311,7 +311,7 @@ async def teraBox(bot, message):
         user_id_text = f"🆔 | User ID: [{user_id}](tg://user?id={user_id})"
 
     await bot.send_message(
-    -1001855899992,
+    -1001749596779,
     f"{user_id_text}\n"
     f"🔗 | Link: {msg}"
     )
