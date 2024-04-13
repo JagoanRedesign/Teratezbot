@@ -5,7 +5,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton as ikb, InlineKeyboardMarkup as ikm
 from pyrogram.types import Message
 from pyrogram.enums import ChatMemberStatus
-from terabox import getUrl
+from terabox import get_details
 import pymongo
 import asyncio
 import youtube_dl
@@ -318,7 +318,8 @@ async def teraBox(bot, message):
     
     ProcessingMsg = await bot.send_message(message.chat.id, "📥")
     try:
-        LinkConvert = getUrl(msg)
+        details = await get_details(msg)
+        LinkConvert = details["direct_link"]
         ShortUrl = shortener.tinyurl.short(LinkConvert)
         print(ShortUrl)
         with youtube_dl.YoutubeDL() as ydl:
@@ -332,7 +333,7 @@ async def teraBox(bot, message):
             caption += f"\n📁 Size: {info['filesize'] / (1024 * 1024):.2f} MB"
         # Download the video using youtube-dl
         temp_dir = tempfile.mkdtemp()
-        temp_file_path = os.path.join(temp_dir, '@teraboxdownloader_xbot video.mp4')
+        temp_file_path = os.path.join(temp_dir, 'video.mp4')
         VideoPath = await download_video(ShortUrl, temp_file_path)
     
         # Check if the file size is below the maximum threshold
@@ -414,4 +415,3 @@ async def teraBox(bot, message):
     
 print("Started..")
 bot.run()
-
