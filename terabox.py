@@ -1,26 +1,10 @@
-import requests
-import re
+import aiohttp
 
-
-def getUrl(url):
-    s = requests.session()
-    r1 = s.get("https://teraboxdownloader.net/")
-
-    re1 = re.search(r'<input type="hidden" id="token" value="([^"]*)">', r1.text)
-    if not re1:
-        return None
-    token = re1.group(1)
-
-    data = {"url": url, "token": token}
-    r2 = s.post("https://teraboxdownloader.net/", json=data)
-    res = r2.json()
-    if (res["status"] != "success"):
-        return None
-    re2 = re.search(
-        '<a id="download_file" style="background: orange" target="_blank" rel="noopener noreferrer" href="([^\"]*)">', res["message"])
-    if not re2:
-        return None
-    url = re2.group(1)
-    return url
-
-
+async def get_details(id):
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"https://tbox-vids.vercel.app/api?data={id}") as response:
+                data = await response.json()
+                return data
+    except Exception as e:
+        print(e)
