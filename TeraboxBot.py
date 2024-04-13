@@ -51,7 +51,7 @@ try:
 except:
     pass
 
-channel_username = "@@mzmucix"
+channel_username = "@mzmucix"
 
 def check_joined():
     async def func(flt, bot, message):
