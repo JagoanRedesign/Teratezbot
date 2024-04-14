@@ -351,10 +351,8 @@ async def teraBox(bot, message):
             # Upload the video if it's below the maximum size
             await ProcessingMsg.delete()
             SendVideoMsg = await bot.send_message(message.chat.id, "📤")
-            caption = f"❤️ | Here's is your Download link: {ShortUrl}\n\n⚙️ |"
-            if info.get('duration'):
-            caption += f"\n🕒 Duration: {info['duration']} seconds"
-            if info.get('filesize'):
+            caption = f"❤️ | Here's is your Download link: {ShortUrl}\n\n⚙️ |"            
+            caption += f"\n🕒 Duration: {info['duration']} seconds"          
             caption += f"\n📁 Size: {info['filesize'] / (1024 * 1024):.2f} MB"
             
             await upload_with_custom_progress(bot, message.chat.id, VideoPath, caption, info.get('thumbnail')):
