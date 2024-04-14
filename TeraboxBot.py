@@ -289,22 +289,17 @@ async def download_video(url, temp_file_path):
         filename = ydl.prepare_filename(info_dict)
     return filename
     
-    
- async def upload_with_custom_progress(bot, chat_id, file_path, caption, thm):
+async def upload_with_custom_progress(bot, chat_id, file_path, caption, thm):
     file_size = os.path.getsize(file_path)
 
     with open(file_path, "rb") as file:
         with tqdm(total=file_size, unit='B', unit_scale=True, desc="⚡ Uploading", position=0, leave=True, bar_format="{desc} {bar} | {percentage:.1f}% | Speed: {rate:.2f} {unit}/s | Processed: {n:.2f} {unit} | Size: {total:.2f} {unit} | ETA: {remaining}s") as pbar:
             for chunk in iter(lambda: file.read(1024), b""):
                 # Proses pengungahan file ke Telegram                
-                bot.send_video(chat_id,
-video=chunk,
- caption=caption,
-thumb=thm, disable_notification=True, supports_streaming=True )
+                bot.send_video(chat_id, video=chunk, caption=caption, thumb=thm, disable_notification=True, supports_streaming=True )
                 pbar.update(len(chunk))
                
     
-
 @bot.on_message(filters.text & filters.private & check_joined())
 async def teraBox(bot, message):
     user_id = message.from_user.id
