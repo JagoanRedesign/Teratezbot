@@ -355,7 +355,7 @@ async def teraBox(bot, message):
             caption += f"\n🕒 Duration: {info['duration']} seconds"          
             caption += f"\n📁 Size: {info['filesize'] / (1024 * 1024):.2f} MB"
             
-            await upload_with_custom_progress(bot, message.chat.id, VideoPath, caption, info.get('thumbnail')):
+            await upload_with_custom_progress(bot, message.chat.id, VideoPath, caption, info['thumbnail']):
 
             try:
                 os.remove(VideoPath)
