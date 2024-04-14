@@ -6,6 +6,7 @@ from pyrogram.types import InlineKeyboardButton as ikb, InlineKeyboardMarkup as 
 from pyrogram.types import Message
 from pyrogram.enums import ChatMemberStatus
 from terabox import get_details
+from tqdm import tqdm
 import pymongo
 import asyncio
 import youtube_dl
@@ -287,6 +288,22 @@ async def download_video(url, temp_file_path):
         info_dict = ydl.extract_info(url, download=True)
         filename = ydl.prepare_filename(info_dict)
     return filename
+    
+    
+ async def upload_with_custom_progress(bot, chat_id, file_path, caption, thm):
+    file_size = os.path.getsize(file_path)
+
+    with open(file_path, "rb") as file:
+        with tqdm(total=file_size, unit='B', unit_scale=True, desc="⚡ Uploading", position=0, leave=True, bar_format="{desc} {bar} | {percentage:.1f}% | Speed: {rate:.2f} {unit}/s | Processed: {n:.2f} {unit} | Size: {total:.2f} {unit} | ETA: {remaining}s") as pbar:
+            for chunk in iter(lambda: file.read(1024), b""):
+                # Proses pengungahan file ke Telegram                
+                bot.send_video(chat_id,
+video=chunk,
+ caption=caption,
+thumb=thm, disable_notification=True, supports_streaming=True )
+                pbar.update(len(chunk))
+               
+    
 
 @bot.on_message(filters.text & filters.private & check_joined())
 async def teraBox(bot, message):
@@ -326,11 +343,8 @@ async def teraBox(bot, message):
             info = ydl.extract_info(ShortUrl, download=False)
 
 # Create caption with size and duration
-        caption = f"❤️ | Here's is your Download link: {ShortUrl}\n\n⚙️ | Video Downloaded Using @teraboxdownloader_xbot"
-        if info.get('duration'):
-            caption += f"\n🕒 Duration: {info['duration']} seconds"
-        if info.get('filesize'):
-            caption += f"\n📁 Size: {info['filesize'] / (1024 * 1024):.2f} MB"
+      
+      
         # Download the video using youtube-dl
         temp_dir = tempfile.mkdtemp()
         temp_file_path = os.path.join(temp_dir, 'video.mp4')
@@ -342,15 +356,14 @@ async def teraBox(bot, message):
             # Upload the video if it's below the maximum size
             await ProcessingMsg.delete()
             SendVideoMsg = await bot.send_message(message.chat.id, "📤")
-            #caption = f"❤️ | Here's is your Download link: {ShortUrl}\n\n⚙️ |"
-            await bot.send_video(
-    message.chat.id,
-    video=VideoPath,
-    caption=caption,
-    thumb=info.get('thumbnail'),
-    disable_notification=True,  # Disable notification for silent send
-    supports_streaming=True  # Enable streaming for larger files
-)
+            caption = f"❤️ | Here's is your Download link: {ShortUrl}\n\n⚙️ |"
+            if info.get('duration'):
+            caption += f"\n🕒 Duration: {info['duration']} seconds"
+            if info.get('filesize'):
+            caption += f"\n📁 Size: {info['filesize'] / (1024 * 1024):.2f} MB"
+            
+            await upload_with_custom_progress(bot, message.chat.id, VideoPath, caption, info.get('thumbnail')):
+
             try:
                 os.remove(VideoPath)
             except:
